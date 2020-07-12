@@ -1,9 +1,20 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment-strftime';
+import {graphql} from 'gatsby';
 
 import {Layout} from '../components/index';
 import {htmlToReact, safePrefix} from '../utils';
+
+// this minimal GraphQL query ensures that when 'gatsby develop' is running,
+// any changes to content files are reflected in browser
+export const query = graphql`
+  query($url: String) {
+    sitePage(path: {eq: $url}) {
+      id
+    }
+  }
+`;
 
 export default class Post extends React.Component {
     render() {
@@ -13,22 +24,22 @@ export default class Post extends React.Component {
                 <header className="post-header inner-md">
                   <div className="post-meta">
                     <time className="published"
-                      dateTime={moment(_.get(this.props, 'pageContext.frontmatter.date')).strftime('%Y-%m-%d %H:%M')}>{moment(_.get(this.props, 'pageContext.frontmatter.date')).strftime('%A, %B %e, %Y')}</time>
+                      dateTime={moment(_.get(this.props, 'pageContext.frontmatter.date', null)).strftime('%Y-%m-%d %H:%M')}>{moment(_.get(this.props, 'pageContext.frontmatter.date', null)).strftime('%A, %B %e, %Y')}</time>
                   </div>
-                  <h1 className="post-title">{_.get(this.props, 'pageContext.frontmatter.title')}</h1>
-                  {_.get(this.props, 'pageContext.frontmatter.subtitle') && 
+                  <h1 className="post-title">{_.get(this.props, 'pageContext.frontmatter.title', null)}</h1>
+                  {_.get(this.props, 'pageContext.frontmatter.subtitle', null) && (
                   <div className="post-subtitle">
-                    {htmlToReact(_.get(this.props, 'pageContext.frontmatter.subtitle'))}
+                    {htmlToReact(_.get(this.props, 'pageContext.frontmatter.subtitle', null))}
                   </div>
-                  }
+                  )}
                 </header>
-                {_.get(this.props, 'pageContext.frontmatter.content_img_path') && 
+                {_.get(this.props, 'pageContext.frontmatter.content_img_path', null) && (
                 <div className="post-thumbnail">
-                  <img className="thumbnail" src={safePrefix(_.get(this.props, 'pageContext.frontmatter.content_img_path'))} alt={_.get(this.props, 'pageContext.frontmatter.title')} />
+                  <img className="thumbnail" src={safePrefix(_.get(this.props, 'pageContext.frontmatter.content_img_path', null))} alt={_.get(this.props, 'pageContext.frontmatter.title', null)} />
                 </div>
-                }
+                )}
                 <div className="post-content inner-md">
-                  {htmlToReact(_.get(this.props, 'pageContext.html'))}
+                  {htmlToReact(_.get(this.props, 'pageContext.html', null))}
                 </div>
               </article>
             </Layout>

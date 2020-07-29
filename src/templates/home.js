@@ -4,7 +4,7 @@ import moment from 'moment-strftime';
 import {graphql} from 'gatsby';
 
 import {Layout} from '../components/index';
-import {markdownify, Link, safePrefix, classNames, getPages} from '../utils';
+import {markdownify, Link, withPrefix, classNames, getPages} from '../utils';
 
 // this minimal GraphQL query ensures that when 'gatsby develop' is running,
 // any changes to content files are reflected in browser
@@ -32,7 +32,7 @@ export default class Home extends React.Component {
                   {_.get(this.props, 'pageContext.frontmatter.intro_actions', null) && (
                   <div className="intro-cta">
                     {_.map(_.get(this.props, 'pageContext.frontmatter.intro_actions', null), (action, action_idx) => (
-                    <Link key={action_idx} to={safePrefix(_.get(action, 'url', null))} className={classNames({'button': (_.get(action, 'style', null) === 'primary') || (_.get(action, 'style', null) === 'secondary'), 'button-secondary': _.get(action, 'style', null) === 'secondary'})} {...(_.get(action, 'new_window', null) ? ({target: '_blank', rel: 'noopener'}) : null)}>{_.get(action, 'label', null)}</Link>
+                    <Link key={action_idx} to={withPrefix(_.get(action, 'url', null))} className={classNames({'button': (_.get(action, 'style', null) === 'primary') || (_.get(action, 'style', null) === 'secondary'), 'button-secondary': _.get(action, 'style', null) === 'secondary'})} {...(_.get(action, 'new_window', null) ? ({target: '_blank', rel: 'noopener'}) : null)}>{_.get(action, 'label', null)}</Link>
                     ))}
                   </div>
                   )}
@@ -44,8 +44,8 @@ export default class Home extends React.Component {
                 <article key={post_idx} className="post post-card">
                   <div className="post-card-inside">
                     {_.get(post, 'frontmatter.thumb_img_path', null) && (
-                    <Link className="post-card-thumbnail" to={safePrefix(_.get(post, 'url', null))}>
-                      <img className="thumbnail" src={safePrefix(_.get(post, 'frontmatter.thumb_img_path', null))} alt={_.get(post, 'frontmatter.title', null)} />
+                    <Link className="post-card-thumbnail" to={withPrefix(_.get(post, 'url', null))}>
+                      <img className="thumbnail" src={withPrefix(_.get(post, 'frontmatter.thumb_img_path', null))} alt={_.get(post, 'frontmatter.title', null)} />
                     </Link>
                     )}
                     <div className="post-card-content">
@@ -54,14 +54,14 @@ export default class Home extends React.Component {
                           <time className="published"
                           dateTime={moment(_.get(post, 'frontmatter.date', null)).strftime('%Y-%m-%d %H:%M')}>{moment(_.get(post, 'frontmatter.date', null)).strftime('%B %d, %Y')}</time>
                         </div>
-                        <h2 className="post-title"><Link to={safePrefix(_.get(post, 'url', null))} rel="bookmark">{_.get(post, 'frontmatter.title', null)}</Link></h2>
+                        <h2 className="post-title"><Link to={withPrefix(_.get(post, 'url', null))} rel="bookmark">{_.get(post, 'frontmatter.title', null)}</Link></h2>
                       </header>
                       <div className="post-excerpt">
                         {_.get(post, 'frontmatter.excerpt', null) && (
                         <p>{_.get(post, 'frontmatter.excerpt', null)}</p>
                         )}
                         <p className="read-more">
-                          <Link className="button button-secondary" to={safePrefix(_.get(post, 'url', null))}>Read more</Link>
+                          <Link className="button button-secondary" to={withPrefix(_.get(post, 'url', null))}>Read more</Link>
                         </p>
                       </div>
                     </div>

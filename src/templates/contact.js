@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {graphql} from 'gatsby';
 
 import {Layout} from '../components/index';
-import {htmlToReact, safePrefix} from '../utils';
+import {htmlToReact, withPrefix} from '../utils';
 import FormField from '../components/FormField';
 
 // this minimal GraphQL query ensures that when 'gatsby develop' is running,
@@ -31,7 +31,7 @@ export default class Contact extends React.Component {
               </header>
               {_.get(this.props, 'pageContext.frontmatter.img_path', null) && (
               <div className="post-thumbnail">
-                <img className="thumbnail" src={safePrefix(_.get(this.props, 'pageContext.frontmatter.img_path', null))} alt={_.get(this.props, 'pageContext.frontmatter.title', null)} />
+                <img className="thumbnail" src={withPrefix(_.get(this.props, 'pageContext.frontmatter.img_path', null))} alt={_.get(this.props, 'pageContext.frontmatter.title', null)} />
               </div>
               )}
               <div className="post-content inner-md">
